@@ -3,14 +3,13 @@ from flask import Flask, jsonify, send_from_directory
 from flask_cors import CORS
 import os
 
-app = Flask(__name__, static_folder='../frontend/build')
-CORS(app)  # Allow cross-origin requests from React API calls (optional if serving frontend here)
+app = Flask(__name__, static_folder='../frontend/build', static_url_path='/')
+CORS(app)
 
 @app.route('/api/message')
 def message():
     return jsonify({"message": "Hello from Flask!"})
 
-# Serve React app
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
 def serve_react(path):
@@ -20,4 +19,4 @@ def serve_react(path):
         return send_from_directory(app.static_folder, 'index.html')
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=10000)
+    app.run()
